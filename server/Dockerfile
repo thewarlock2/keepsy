@@ -1,5 +1,5 @@
 # build stage
-FROM golang:1.26.1-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
@@ -20,7 +20,9 @@ WORKDIR /root/
 
 COPY --from=builder /app/main .
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/start.sh ./start.sh
+RUN chmod +x ./main ./start.sh
 
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["./start.sh"]
